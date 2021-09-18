@@ -1,4 +1,4 @@
-package FSM
+package fsm
 
 import (
 	"fmt"
@@ -51,11 +51,13 @@ func NewFSM(initial string, events map[Event]string) *FSM {
 	states := make(map[string]int)
 	for k, v := range events {
 		// if destination state not yet added, initialize
-		for _, present := states[v]; !present; {
+		_, present := states[v]
+		if !present {
 			states[v] = 0
 		}
 		// if start state not present, initialize
-		for _, present := states[k.From]; !present; {
+		_, present = states[k.From]
+		if !present {
 			states[k.From] = 0
 		}
 		states[k.From] += 1
