@@ -19,14 +19,18 @@ type FSM struct {
 }
 
 func (f *FSM) GetEvent(start string, input string) (Event, error) {
-	// GetEvent returns a single transition and an error value based on a starting state and an input symbol
-	// GetEvent assumes there is only one transition that matches the starting state and the input state
-	for k := range f.Events {
-		if k.From == start && k.Input == input {
-			return k, nil
-		}
+	// GetEvent returns a single event and an error value based on a starting state and an input symbol
+	e := Event{
+		From:  start,
+		Input: input,
 	}
-	return Event{}, fmt.Errorf("no transtion from state %s with input %s found", start, input)
+	_, present := f.Events[e]
+
+	if present {
+		return e, nil
+	}
+
+	return Event{}, fmt.Errorf("no event from state %s with input %s found", start, input)
 }
 
 func (f *FSM) Event(input string) error {
