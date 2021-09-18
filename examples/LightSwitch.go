@@ -21,6 +21,11 @@ func main() {
 	f := fsm.NewFSM("off", events)
 	fmt.Printf("Current state: %s\n", f.CurrentState)
 	fmt.Println("Flipping the switch...")
-	f.Event("flip")
+	err := f.Event("flip")
+
+	if err != nil {
+		panic(err)
+	}
+
 	fmt.Printf("Current state: %s\n", f.CurrentState)
 }
