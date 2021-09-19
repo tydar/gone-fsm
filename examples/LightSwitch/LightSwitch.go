@@ -18,7 +18,7 @@ func main() {
 		From:  "off",
 	}
 	events[offFlip] = "on"
-	f := fsm.NewFSM("off", events)
+	f := fsm.NewFSM("off", events, []string{"on", "off"})
 	fmt.Printf("Current state: %s\n", f.CurrentState)
 	fmt.Println("Flipping the switch...")
 	err := f.Event("flip")
