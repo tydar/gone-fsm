@@ -60,6 +60,11 @@ func (f *FSM) Accepted() bool {
 	return false
 }
 
+func (f *FSM) Reset() {
+	// Reset returns the FSM to the initial state
+	f.CurrentState = f.InitialState
+}
+
 func NewFSM(initial string, events map[Event]string, accept []string) *FSM {
 	// NewFSM creates a new FSM by receiving an initial state and a map describing all possible transitions
 	states := make(map[string]int)
