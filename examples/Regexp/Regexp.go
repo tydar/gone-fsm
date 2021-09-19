@@ -25,7 +25,7 @@ func onlyOne(s string) (*fsm.FSM, error) {
 }
 
 func oneOrMore(s string) (*fsm.FSM, error) {
-	// oneOrMore returns an FSM that matches a regex like ^a+?
+	// oneOrMore returns an FSM that matches a regex like ^a+$
 	if len(s) != 1 {
 		return &fsm.FSM{}, fmt.Errorf("oneOrMore must be passed a string of length 1")
 	}
