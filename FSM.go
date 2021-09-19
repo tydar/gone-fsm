@@ -31,7 +31,10 @@ func (f *FSM) GetEvent(start string, input string) (Event, error) {
 		return e, nil
 	}
 
-	return Event{}, fmt.Errorf("no event from state %s with input %s found", start, input)
+	return Event{}, &UnmatchedEventError{
+		Input:        input,
+		CurrentState: f.CurrentState,
+	}
 }
 
 func (f *FSM) Event(input string) error {
@@ -89,4 +92,14 @@ func NewFSM(initial string, events map[Event]string, accept []string) *FSM {
 		States:       statesSlice,
 		AcceptStates: accept,
 	}
+}
+
+// Error definitions begin here
+type UnmatchedEventError struct {
+	Input        string
+	CurrentState string
+}
+
+func (e *UnmatchedEventError) Error() string {
+	return fmt.Sprintf("no valid transition with input %s from state %s", e.Input, e.CurrentState)
 }
