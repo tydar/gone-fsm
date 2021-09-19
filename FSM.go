@@ -4,8 +4,7 @@ import (
 	"fmt"
 )
 
-// FSM package implementing a basic set of functions for a deterministic FSM
-
+// Event type describes a transition by the input and the matching current state
 type Event struct {
 	Input string
 	From  string
@@ -19,8 +18,8 @@ type FSM struct {
 	AcceptStates []string
 }
 
+// GetEvent returns a single event and an error value based on a starting state and an input symbol
 func (f *FSM) GetEvent(start string, input string) (Event, error) {
-	// GetEvent returns a single event and an error value based on a starting state and an input symbol
 	e := Event{
 		From:  start,
 		Input: input,
@@ -37,9 +36,9 @@ func (f *FSM) GetEvent(start string, input string) (Event, error) {
 	}
 }
 
+// Event will transition the state as appropriate for the input value
+// If no transition from the current state with the current input is found an error is returned
 func (f *FSM) Event(input string) error {
-	// Event will transition the state as appropriate for the input value
-	// If no transition from the current state with the current input is found an error is returned
 	e, err := f.GetEvent(f.CurrentState, input)
 
 	if err != nil {
@@ -50,8 +49,8 @@ func (f *FSM) Event(input string) error {
 	return nil
 }
 
+// Accepted returns true if the current state of the FSM is one of the accept states
 func (f *FSM) Accepted() bool {
-	// Accepted returns true if the current state of the FSM is one of the accept states
 	for i := range f.AcceptStates {
 		if f.AcceptStates[i] == f.CurrentState {
 			return true
@@ -60,13 +59,13 @@ func (f *FSM) Accepted() bool {
 	return false
 }
 
+// Reset sets the FSM CurrentState to the initial state
 func (f *FSM) Reset() {
-	// Reset returns the FSM to the initial state
 	f.CurrentState = f.InitialState
 }
 
+// NewFSM creates a new FSM by receiving an initial state, a map describing all possible transitions, and a set of accepted states
 func NewFSM(initial string, events map[Event]string, accept []string) *FSM {
-	// NewFSM creates a new FSM by receiving an initial state and a map describing all possible transitions
 	states := make(map[string]int)
 	for k, v := range events {
 		// if destination state not yet added, initialize
@@ -99,7 +98,7 @@ func NewFSM(initial string, events map[Event]string, accept []string) *FSM {
 	}
 }
 
-// Error definitions begin here
+// UnmatchedEventError describes the error when the FSM receives an input that does not match a transition for its current state
 type UnmatchedEventError struct {
 	Input        string
 	CurrentState string
